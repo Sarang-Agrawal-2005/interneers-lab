@@ -1,0 +1,1 @@
+from Products.repository.product_model import ProductModel
