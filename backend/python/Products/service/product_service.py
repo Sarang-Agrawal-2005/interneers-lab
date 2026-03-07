@@ -11,7 +11,9 @@ def entity_to_response(product: ProductEntity): # function to convert the produc
             sku = product.sku,
             name = product.name,
             quantity = product.quantity,
-            reorder_level = product.reorder_level
+            reorder_level = product.reorder_level,
+            created_at = product.created_at,
+            updated_at = product.updated_at
         )
 
 class ProductServices():
@@ -40,7 +42,9 @@ class ProductServices():
             sku = payload.sku,
             name = payload.name,
             quantity = payload.quantity,
-            reorder_level = payload.reorder_level
+            reorder_level = payload.reorder_level,
+            created_at = payload.created_at,
+            updated_at = payload.updated_at
         )
         
         product = self.repo.create_product(create)
@@ -50,10 +54,12 @@ class ProductServices():
     def update_product(self, sku, payload: UpdateProductRequest):
 
         update = ProductEntity(
-            sku = sku,
+            sku = sku, # wont be chnaged by repo layer
             name = payload.name,
             quantity = payload.quantity,
-            reorder_level = payload.reorder_level
+            reorder_level = payload.reorder_level,
+            created_at = None, # wont be chnaged by repo layer
+            updated_at = payload.updated_at
         )
         
         product = self.repo.update_product(sku, update)

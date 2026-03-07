@@ -1,12 +1,13 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+from datetime import datetime
 
-from Products.repository.product_repository import ProductRepsository
+from Products.repository.product_repository import ProductRepository
 from Products.service.product_service import ProductServices
 from Products.domain.product_request import CreateProductRequest, UpdateProductRequest
 
-repo = ProductRepsository()
+repo = ProductRepository()
 service = ProductServices(repo)
 
 @api_view(["GET"])
@@ -33,7 +34,9 @@ def create_product(request):
             sku=data.get("sku"),
             name=data.get("name"),
             quantity=data.get("quantity"),
-            reorder_level=data.get("reorder_level")
+            reorder_level=data.get("reorder_level"),
+            created_at = datetime.now(),
+            updated_at = datetime.now()
         )
 
         created = service.create_product(req)
@@ -50,7 +53,8 @@ def update_product(request, sku):
     req = UpdateProductRequest(
             name=data.get("name"),
             quantity=data.get("quantity"),
-            reorder_level=data.get("reorder_level")
+            reorder_level=data.get("reorder_level"),
+            updated_at = datetime.now()
         )
 
     updated = service.update_product(sku, req)
