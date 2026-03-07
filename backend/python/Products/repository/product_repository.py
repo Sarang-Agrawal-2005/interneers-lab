@@ -4,7 +4,7 @@ from Products.models import ProductModel
 # called by the service layer to perform the actual crud operations
 # handles actual crud operations and conversion logic between django/mongodb models and domain entties
 
-class ProductRepsoitory():
+class ProductRepsository():
 
     def get_all(self):
         orm_products = ProductModel.objects.all()
