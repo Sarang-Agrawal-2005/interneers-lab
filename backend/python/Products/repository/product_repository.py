@@ -20,6 +20,7 @@ class ProductRepository():
 
     
     def create_product(self, payload: ProductEntity):
+        
         orm_product = ProductModel(
             sku = payload.sku,
             name = payload.name,
@@ -41,9 +42,13 @@ class ProductRepository():
         if not orm_product:
             return None
 
-        orm_product.name = update_payload.name
-        orm_product.quantity = update_payload.quantity
-        orm_product.reorder_level = update_payload.reorder_level
+        if update_payload.name is not None:
+            orm_product.name = update_payload.name
+        if update_payload.quantity is not None:
+            orm_product.quantity = update_payload.quantity
+        if update_payload.reorder_level is not None:
+            orm_product.reorder_level = update_payload.reorder_level
+        
         orm_product.updated_at = update_payload.updated_at
 
         orm_product.save()

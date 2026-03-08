@@ -38,6 +38,9 @@ class ProductServices():
     
     def create_product(self, payload: CreateProductRequest):
 
+        if self.get_product(payload.sku) is not None:
+            raise ValueError("sku is not unique")
+
         create = ProductEntity(
             sku = payload.sku,
             name = payload.name,
@@ -48,6 +51,9 @@ class ProductServices():
         )
         
         product = self.repo.create_product(create)
+
+        if not product:
+            raise ValueError("sku is not unique")
 
         return entity_to_response(product)
     

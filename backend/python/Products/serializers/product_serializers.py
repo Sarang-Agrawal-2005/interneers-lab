@@ -1,0 +1,12 @@
+from rest_framework import serializers
+
+class CreateProductSerializer(serializers.Serializer): # automatic input validation
+    sku = serializers.IntegerField(required=True)
+    name = serializers.CharField(required=True)
+    quantity = serializers.IntegerField(required=True, min_value=0)
+    reorder_level = serializers.IntegerField(required=True, min_value=0)
+
+class UpdateProductSerializer(serializers.Serializer):
+    name = serializers.CharField(required=False)
+    quantity = serializers.IntegerField(required=False, min_value=0)
+    reorder_level = serializers.IntegerField(required=False, min_value=0)
