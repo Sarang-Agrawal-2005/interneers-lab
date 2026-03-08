@@ -1,5 +1,6 @@
 from Products.domain.product import ProductEntity
 from Products.repository.product_model import ProductModel
+from Products.repository.product_category_model import ProductCategoryModel
 
 # called by the service layer to perform the actual crud operations
 # handles actual crud operations and conversion logic between django/mongodb models and domain entties
@@ -20,6 +21,15 @@ class ProductRepository():
 
     
     def create_product(self, payload: ProductEntity):
+
+        category = None
+
+        if payload.category_id:
+            category = ProductCategoryModel.objects(id = payload.category_id).first()
+
+            if not category:
+                raise ValueError("Category does not exist")
+
         
         orm_product = ProductModel(
             sku = payload.sku,
@@ -27,7 +37,8 @@ class ProductRepository():
             quantity = payload.quantity,
             reorder_level = payload.reorder_level,
             created_at = payload.created_at,
-            updated_at = payload.updated_at
+            updated_at = payload.updated_at,
+            category = category
 
         )
 
@@ -48,6 +59,15 @@ class ProductRepository():
             orm_product.quantity = update_payload.quantity
         if update_payload.reorder_level is not None:
             orm_product.reorder_level = update_payload.reorder_level
+        
+
+        if update_payload.category_id is not None:
+            category = ProductCategoryModel.objects(id = update_payload.category_id).first()
+
+            if not category:
+                raise ValueError("Category does not exist")
+            else:
+                orm_product.category = category
         
         orm_product.updated_at = update_payload.updated_at
 
@@ -75,7 +95,8 @@ class ProductRepository():
             quantity=orm_obj.quantity,
             reorder_level=orm_obj.reorder_level,
             created_at=orm_obj.created_at,
-            updated_at=orm_obj.updated_at
+            updated_at=orm_obj.updated_at,
+            category_id=str(orm_obj.category.id) if orm_obj.category else None
         )
 
 

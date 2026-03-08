@@ -46,7 +46,8 @@ def create_product(request):
             quantity=data.get("quantity"),
             reorder_level=data.get("reorder_level"),
             created_at = now,
-            updated_at = now
+            updated_at = now,
+            category_id = data.get("category_id")
         )
 
         created = service.create_product(req)
@@ -71,7 +72,8 @@ def update_product(request, sku):
             name=data.get("name"),
             quantity=data.get("quantity"),
             reorder_level=data.get("reorder_level"),
-            updated_at = datetime.now(timezone.utc)
+            updated_at = datetime.now(timezone.utc),
+            category_id = data.get("category_id")
         )
 
         updated = service.update_product(sku, req)

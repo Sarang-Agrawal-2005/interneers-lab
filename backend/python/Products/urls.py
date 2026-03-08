@@ -1,5 +1,6 @@
 from django.urls import path, include
 from Products.api.product_views import list_products, get_product, create_product, update_product, delete_product
+from Products.api.product_category_views import list_categories, get_category, create_category, update_category, delete_category
 
 
 urlpatterns = [
@@ -8,4 +9,10 @@ urlpatterns = [
     path('products/create', create_product),
     path('products/update/<str:sku>/', update_product),
     path('products/delete/<str:sku>/', delete_product),
+
+    path('categories/', list_categories),
+    path('categories/<str:category_id>', get_category),
+    path('categories/create/', create_category),
+    path('categories/update/<str:category_id>/', update_category),
+    path('categories/delete/<str:category_id>/', delete_category),
 ]

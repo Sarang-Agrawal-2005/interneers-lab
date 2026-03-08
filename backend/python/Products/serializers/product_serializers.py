@@ -5,8 +5,10 @@ class CreateProductSerializer(serializers.Serializer): # automatic input validat
     name = serializers.CharField(required=True)
     quantity = serializers.IntegerField(required=True, min_value=0)
     reorder_level = serializers.IntegerField(required=True, min_value=0)
+    category_id = serializers.CharField(required=False)
 
 class UpdateProductSerializer(serializers.Serializer):
     name = serializers.CharField(required=False)
     quantity = serializers.IntegerField(required=False, min_value=0)
     reorder_level = serializers.IntegerField(required=False, min_value=0)
+    category_id = serializers.CharField(required=False)

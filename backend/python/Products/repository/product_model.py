@@ -9,7 +9,9 @@
 #     class Meta:
 #         db_table = "products"
 
-from mongoengine import Document, StringField, IntField, DateTimeField
+from mongoengine import Document, StringField, IntField, DateTimeField, ReferenceField, NULLIFY
+
+from Products.repository.product_category_model import ProductCategoryModel
 
 class ProductModel(Document):
 
@@ -19,6 +21,8 @@ class ProductModel(Document):
     reorder_level = IntField(required=True)
     created_at = DateTimeField(required=True)
     updated_at = DateTimeField(required=True)
+
+    category = ReferenceField(ProductCategoryModel, required = False, reverse_delete_rule=NULLIFY)
 
     meta = {
         "collection": "products"
