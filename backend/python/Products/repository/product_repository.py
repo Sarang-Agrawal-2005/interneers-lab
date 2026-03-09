@@ -85,7 +85,56 @@ class ProductRepository():
 
         orm_product.delete()
         return True
+    
+    def get_products_of_category(self, category_id):
+
+        orm_category = ProductCategoryModel.objects(id = category_id).first()
+
+        if not orm_category:
+            return None
+
+        orm_products = ProductModel.objects(category = orm_category)
+
+        return [self.convert(p) for p in orm_products]
+    
+    def add_category(self, sku, category_id):
+        orm_category = ProductCategoryModel.objects(id = category_id).first()
+
+        if not orm_category:
+            raise ValueError("Category not found")
         
+        orm_product = ProductModel.objects(sku = sku).first()
+
+        if not orm_product:
+            return None
+        
+        orm_product.category = orm_category
+        orm_product.save()
+
+        return self.convert(orm_product)
+        
+
+    def remove_category(self, sku, category_id):
+        orm_category = ProductCategoryModel.objects(id = category_id).first()
+
+        if not orm_category:
+            raise ValueError("Category not found")
+        
+        orm_product = ProductModel.objects(sku = sku).first()
+
+        if not orm_product:
+            return None
+        
+        if not orm_product.category:
+            raise ValueError("Product does not belong to anyy category")
+        
+        if not orm_product.category == orm_category:
+            raise ValueError("Product does not belong to the specified category")
+        
+        orm_product.category = None
+        orm_product.save()
+
+        return self.convert(orm_product)
         
     
     def convert(self, orm_obj): # INTERNAL CONVERTER (ORM -> DOMAIN)

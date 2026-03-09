@@ -85,3 +85,39 @@ class ProductServices():
         
         return self.repo.delete_product(sku)
     
+    def list_products_of_category(self, category_id):
+        if not category_id:
+            raise ValueError("Category is required")
+        
+        products = self.repo.get_products_of_category(category_id)
+
+        if products is None:
+            return None
+
+        return [entity_to_response(p) for p in products]
+    
+    def assign_category(self, sku, category_id):
+        if not category_id:
+            raise ValueError("Category is required")
+        
+        product = self.repo.add_category(sku, category_id)
+
+        if product is None:
+            return None
+
+        return entity_to_response(product)
+    
+    def remove_category(self, sku, category_id):
+        if not category_id:
+            raise ValueError("Category is required")
+        if not sku:
+            raise ValueError("sku is required")
+        
+        product = self.repo.remove_category(sku, category_id)
+
+        if product is None:
+            return None
+
+        return entity_to_response(product)
+
+    

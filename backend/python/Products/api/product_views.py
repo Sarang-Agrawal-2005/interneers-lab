@@ -2,6 +2,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from datetime import datetime, timezone
+from bson import ObjectId
 
 from Products.repository.product_repository import ProductRepository
 from Products.service.product_service import ProductServices
@@ -96,4 +97,6 @@ def delete_product(request, sku):
     return Response({"message" : "product deleted"}, status=status.HTTP_204_NO_CONTENT)
 
     
-   
+
+
+
