@@ -24,6 +24,8 @@ class ProductModel(Document):
 
     category = ReferenceField(ProductCategoryModel, required = False, reverse_delete_rule=NULLIFY)
 
+    brand = StringField(required=False)
+
     meta = {
         "collection": "products"
     }

@@ -14,7 +14,8 @@ def entity_to_response(product: ProductEntity): # function to convert the produc
             reorder_level = product.reorder_level,
             created_at = product.created_at,
             updated_at = product.updated_at,
-            category_id = product.category_id
+            category_id = product.category_id,
+            brand = product.brand
         )
 
 class ProductServices():
@@ -42,6 +43,9 @@ class ProductServices():
         if self.get_product(payload.sku) is not None:
             raise ValueError("sku is not unique")
         
+        if payload.brand is None:
+            raise ValueError("Brand is required")
+        
 
         create = ProductEntity(
             sku = payload.sku,
@@ -50,7 +54,8 @@ class ProductServices():
             reorder_level = payload.reorder_level,
             created_at = payload.created_at,
             updated_at = payload.updated_at,
-            category_id = payload.category_id
+            category_id = payload.category_id,
+            brand = payload.brand
         )
         
         product = self.repo.create_product(create)
@@ -69,7 +74,8 @@ class ProductServices():
             reorder_level = payload.reorder_level,
             created_at = None, # wont be chnaged by repo layer
             updated_at = payload.updated_at,
-            category_id = payload.category_id
+            category_id = payload.category_id,
+            brand = payload.brand
         )
         
         product = self.repo.update_product(sku, update)

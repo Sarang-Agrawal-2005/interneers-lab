@@ -38,7 +38,8 @@ class ProductRepository():
             reorder_level = payload.reorder_level,
             created_at = payload.created_at,
             updated_at = payload.updated_at,
-            category = category
+            category = category,
+            brand = payload.brand
 
         )
 
@@ -59,6 +60,10 @@ class ProductRepository():
             orm_product.quantity = update_payload.quantity
         if update_payload.reorder_level is not None:
             orm_product.reorder_level = update_payload.reorder_level
+        if update_payload.brand is not None:
+            if update_payload.brand.strip() == "":
+                raise ValueError("Brand cannot be empty")
+            orm_product.brand = update_payload.brand
         
 
         if update_payload.category_id is not None:
@@ -145,7 +150,8 @@ class ProductRepository():
             reorder_level=orm_obj.reorder_level,
             created_at=orm_obj.created_at,
             updated_at=orm_obj.updated_at,
-            category_id=str(orm_obj.category.id) if orm_obj.category else None
+            category_id=str(orm_obj.category.id) if orm_obj.category else None, # handles products that dont belong to any category
+            brand=orm_obj.brand if orm_obj.brand else None # handles old products that dont have brands
         )
 
 
