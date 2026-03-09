@@ -140,6 +140,41 @@ class ProductRepository():
         orm_product.save()
 
         return self.convert(orm_product)
+    
+    def bulk_create_products(self, products_payload):
+
+        products = []
+
+        for payload in products_payload:
+            
+            category = None
+
+            if payload.category_id:
+                category = ProductCategoryModel.objects(id = payload.category_id).first()
+
+                if not category:
+                    raise ValueError(f"Category {payload.category_id} of product with sku {payload.sku} does not exist")
+
+            
+            orm_product = ProductModel(
+                sku = payload.sku,
+                name = payload.name,
+                quantity = payload.quantity,
+                reorder_level = payload.reorder_level,
+                created_at = payload.created_at,
+                updated_at = payload.updated_at,
+                category = category,
+                brand = payload.brand
+
+            )
+
+            orm_product.save()
+            products.append(orm_product)
+        
+        return [self.convert(p) for p in products]
+        
+
+
         
     
     def convert(self, orm_obj): # INTERNAL CONVERTER (ORM -> DOMAIN)

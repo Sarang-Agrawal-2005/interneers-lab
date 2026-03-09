@@ -43,7 +43,7 @@ class ProductServices():
         if self.get_product(payload.sku) is not None:
             raise ValueError("sku is not unique")
         
-        if payload.brand is None:
+        if payload.brand is None or payload.brand.strip() == "":
             raise ValueError("Brand is required")
         
 
@@ -125,5 +125,38 @@ class ProductServices():
             return None
 
         return entity_to_response(product)
+    
+    def bulk_create_products(self, products_payload):
+        
+        entities = []
+
+        for payload in products_payload:
+
+            product = self.repo.get_by_sku(payload.sku)
+
+            if product:
+                raise ValueError(f"Product with sku {payload.sku} already exists")
+
+            if not payload.brand or payload.brand.strip() == "":
+                raise ValueError(f"Product with sku {payload.sku} does not have a brand")
+            
+            create = ProductEntity(
+                sku = payload.sku,
+                name = payload.name,
+                quantity = payload.quantity,
+                reorder_level = payload.reorder_level,
+                created_at = payload.created_at,
+                updated_at = payload.updated_at,
+                category_id = payload.category_id,
+                brand = payload.brand
+            )
+
+            entities.append(create)
+
+        products = self.repo.bulk_create_products(entities)
+
+        return [entity_to_response(p) for p in products]
+    
+
 
     

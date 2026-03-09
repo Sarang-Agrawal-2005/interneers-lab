@@ -1,4 +1,6 @@
-from rest_framework.decorators import api_view
+import csv
+from rest_framework.decorators import api_view, parser_classes
+from rest_framework.parsers import MultiPartParser, FileUploadParser
 from rest_framework.response import Response
 from rest_framework import status
 from datetime import datetime, timezone
@@ -98,7 +100,58 @@ def delete_product(request, sku):
     
     return Response({"message" : "product deleted"}, status=status.HTTP_204_NO_CONTENT)
 
+@api_view(["POST"])
+@parser_classes([MultiPartParser, FileUploadParser])
+def bulk_create_products(request):
+
+    if "file" not in request.FILES:
+        return Response({"error" : "CSV file is required"}, status = status.HTTP_400_BAD_REQUEST)
     
+    file = request.FILES["file"]
+
+    try:
+        text = file.read().decode("utf-8").splitlines()
+        reader = csv.DictReader(text)
+
+        valid_rows = []
+        errors = []
+
+        for index, row in enumerate(reader, start=1):
+            serializer = CreateProductSerializer(data = row)
+
+            if serializer.is_valid():
+                valid_rows.append(serializer.validated_data)
+            else:
+                errors.append({
+                    "row" : index,
+                    "error" : serializer.errors
+                })
+        
+        if errors:
+            return Response({"validation_errors" : errors}, status = status.HTTP_400_BAD_REQUEST)
+        
+        now = datetime.now(timezone.utc)
+        
+        products = [CreateProductRequest(
+            sku=data.get("sku"),
+            name=data.get("name"),
+            quantity=data.get("quantity"),
+            reorder_level=data.get("reorder_level"),
+            created_at = now,
+            updated_at = now,
+            category_id = data.get("category_id"),
+            brand = data.get("brand")
+            ) for data in valid_rows]
+        
+        created = service.bulk_create_products(products)
+
+        return Response([p.to_dict() for p in created], status=status.HTTP_201_CREATED)
+    
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        
+        
 
 
 
