@@ -1,3 +1,5 @@
+from warnings import filters
+
 from Products.domain.product import ProductEntity
 from Products.repository.product_model import ProductModel
 from Products.repository.product_category_model import ProductCategoryModel
@@ -7,8 +9,43 @@ from Products.repository.product_category_model import ProductCategoryModel
 
 class ProductRepository():
 
-    def get_all(self):
+    def get_all(self, filters):
+        
         orm_products = ProductModel.objects()
+
+        sort_by = filters.get("sort_by")
+        order = filters.get("order")
+        page = filters.get("page")
+        page_size = filters.get("page_size")
+        brand = filters.get("brand")
+        categories = filters.get("categories")
+        min_qty = filters.get("min_qty")
+        max_qty = filters.get("max_qty")
+
+        if brand:
+            orm_products = orm_products.filter(brand__iexact = brand)
+
+        if categories:
+            orm_products = orm_products.filter(category__in = categories)
+            
+        if min_qty:
+            orm_products = orm_products.filter(quantity__gte = int(min_qty))
+
+        if max_qty:
+            orm_products = orm_products.filter(quantity__lte= int(max_qty))
+
+
+        if sort_by:
+            if order == "desc":
+                sort_by = f"-{sort_by}"
+            
+            orm_products = orm_products.order_by(sort_by)
+
+        if page and page_size:
+            skip = (int(page) - 1) * int(page_size)
+            limit = int(page_size)
+            orm_products = orm_products.skip(skip).limit(limit)
+
         return [self.convert(p) for p in orm_products]
     
     def get_by_sku(self, sku):

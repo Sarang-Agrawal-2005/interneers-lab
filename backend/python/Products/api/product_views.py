@@ -9,7 +9,7 @@ from bson import ObjectId
 from Products.repository.product_repository import ProductRepository
 from Products.service.product_service import ProductServices
 from Products.domain.product_request import CreateProductRequest, UpdateProductRequest
-from Products.serializers.product_serializers import CreateProductSerializer, UpdateProductSerializer
+from Products.serializers.product_serializers import CreateProductSerializer, UpdateProductSerializer, ProductFilterSerializer
 
 repo = ProductRepository()
 service = ProductServices(repo)
@@ -17,7 +17,18 @@ service = ProductServices(repo)
 
 @api_view(["GET"])
 def list_products(request):
-    products = service.list_products()
+
+    query_params = request.GET.copy()
+    query_params.setlist("categories", request.GET.getlist("categories"))
+
+    serializer = ProductFilterSerializer(data=query_params)
+
+    if not serializer.is_valid():
+        return Response({"error": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+    filters = serializer.validated_data
+
+    products = service.list_products(filters)
     data = [p.to_dict() for p in products]
     return Response(data, status = status.HTTP_200_OK)
 

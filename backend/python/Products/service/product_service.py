@@ -22,8 +22,8 @@ class ProductServices():
     def __init__(self, repository):
         self.repo = repository
     
-    def list_products(self):
-        products = self.repo.get_all()
+    def list_products(self, filters):
+        products = self.repo.get_all(filters)
 
         return [entity_to_response(p) for p in products]
     

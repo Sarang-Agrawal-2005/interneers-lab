@@ -14,3 +14,26 @@ class UpdateProductSerializer(serializers.Serializer):
     reorder_level = serializers.IntegerField(required=False, min_value=0)
     category_id = serializers.CharField(required=False)
     brand = serializers.CharField(required=False, allow_null=False)
+
+class ProductFilterSerializer(serializers.Serializer):
+    categories = serializers.ListField(
+        child = serializers.CharField(),
+        required = False
+    )
+
+    brand = serializers.CharField(required = False)
+
+    min_qty = serializers.IntegerField(required = False)
+    max_qty = serializers.IntegerField(required = False)
+
+    sort_by = serializers.ChoiceField(
+        choices=["name", "sku", "brand", "quantity", "reorder_level", "created_at"],
+        required = False
+    )
+    order = serializers.ChoiceField(
+        choices=["asc", "desc"],
+        required = False
+    )
+
+    page = serializers.IntegerField(min_value = 1, default = 1, required = False)
+    page_size = serializers.IntegerField(min_value = 1, max_value = 200, default = 20, required = False)
