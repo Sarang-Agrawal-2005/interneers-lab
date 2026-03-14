@@ -40,7 +40,7 @@ class ProductServices():
     
     def create_product(self, payload: CreateProductRequest):
 
-        if self.get_product(payload.sku) is not None:
+        if self.repo.get_by_sku(payload.sku) is not None:
             raise ValueError("sku is not unique")
         
         if payload.brand is None or payload.brand.strip() == "":
@@ -66,6 +66,9 @@ class ProductServices():
         return entity_to_response(product)
     
     def update_product(self, sku, payload: UpdateProductRequest):
+
+        if not sku:
+            raise ValueError("sku is required")
 
         update = ProductEntity(
             sku = sku, # wont be chnaged by repo layer
@@ -103,6 +106,8 @@ class ProductServices():
         return [entity_to_response(p) for p in products]
     
     def assign_category(self, sku, category_id):
+        if not sku:
+            raise ValueError("sku is required")
         if not category_id:
             raise ValueError("Category is required")
         
@@ -128,14 +133,20 @@ class ProductServices():
     
     def bulk_create_products(self, products_payload):
         
+        csv_file_skus = {}
         entities = []
 
         for payload in products_payload:
 
+            if csv_file_skus.get(payload.sku) is not None:
+                raise ValueError(f"Multiple product with sku {payload.sku} found in csv file, sku must be unique")
+            
+            csv_file_skus[payload.sku] = "Unique"
+
             product = self.repo.get_by_sku(payload.sku)
 
             if product:
-                raise ValueError(f"Product with sku {payload.sku} already exists")
+                raise ValueError(f"Product with sku {payload.sku} already exists in database")
 
             if not payload.brand or payload.brand.strip() == "":
                 raise ValueError(f"Product with sku {payload.sku} does not have a brand")

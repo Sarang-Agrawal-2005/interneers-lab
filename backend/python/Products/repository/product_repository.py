@@ -1,4 +1,5 @@
 from warnings import filters
+from datetime import datetime, timezone
 
 from Products.domain.product import ProductEntity
 from Products.repository.product_model import ProductModel
@@ -151,6 +152,7 @@ class ProductRepository():
             return None
         
         orm_product.category = orm_category
+        orm_product.updated_at = datetime.now(timezone.utc)
         orm_product.save()
 
         return self.convert(orm_product)
@@ -168,12 +170,14 @@ class ProductRepository():
             return None
         
         if not orm_product.category:
-            raise ValueError("Product does not belong to anyy category")
+            raise ValueError("Product does not belong to any category")
         
         if not orm_product.category == orm_category:
             raise ValueError("Product does not belong to the specified category")
         
-        orm_product.category = None
+        Uncategorized = ProductCategoryModel.objects(title = "Uncategorized").first()
+        
+        orm_product.category = Uncategorized
         orm_product.save()
 
         return self.convert(orm_product)
