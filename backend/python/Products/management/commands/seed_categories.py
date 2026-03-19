@@ -3,6 +3,7 @@ from Products.repository.product_category_model import ProductCategoryModel
 from datetime import datetime, timezone
 
 DEFAULT_CATEGORIES = [
+    ("toys", "toysfor kids"),
     ("Food items", "All food items and snacks."),
     ("Clothes", "Clothing items."),
     ("Books and Magazines", "Literary works."),
