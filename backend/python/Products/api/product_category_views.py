@@ -9,7 +9,7 @@ from Products.service.product_category_service import ProductCategoryServices
 from Products.repository.product_repository import ProductRepository
 from Products.service.product_service import ProductServices
 from Products.domain.product_category_request import CreateProductCategoryRequest, UpdateProductCategoryRequest
-from Products.serializers.product_category_serializers import CreateProductCategorySerializer, UpdateProductCategorySerializer, AddProductCategorySerializer
+from Products.serializers.product_category_serializers import CreateProductCategorySerializer, UpdateProductCategorySerializer
 
 repo = ProductCategoryRepository()
 service = ProductCategoryServices(repo)
@@ -131,19 +131,20 @@ def add_product_to_category(request, category_id):
     if not ObjectId.is_valid(category_id):
         return Response({"error" : "Invalid category id"}, status = status.HTTP_400_BAD_REQUEST)
     
-    serializer = AddProductCategorySerializer(data = request.data)
+    data = request.data
+    sku = data.get("sku")
 
-    if not serializer.is_valid():
-        return Response({"error" : serializer.errors}, status= status.HTTP_400_BAD_REQUEST)
+    try:
+        sku = int(sku)
+    except ValueError as e:
+        return Response({"error" : "sku must be an integer"}, status=status.HTTP_400_BAD_REQUEST)
     
     try:
-    
-        data = serializer.validated_data
         
-        product = product_service.assign_category(data.get("sku"), category_id)
+        product = product_service.assign_category(sku, category_id)
 
         if product is None:
-            return Response({"error": "Product not founs"}, status= status.HTTP_404_NOT_FOUND)
+            return Response({"error": "Product not found"}, status= status.HTTP_404_NOT_FOUND)
 
         return Response(product.to_dict(), status= status.HTTP_200_OK)
     

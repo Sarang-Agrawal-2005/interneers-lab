@@ -34,6 +34,12 @@ def list_products(request):
 
 @api_view(["GET"])
 def get_product(request, sku):
+
+    try:
+        sku = int(sku)
+    except ValueError as e:
+        return Response({"error" : "sku must be an integer"}, status=status.HTTP_400_BAD_REQUEST)
+    
     product = service.get_product(sku)
     
     if not product:
@@ -104,6 +110,12 @@ def update_product(request, sku):
 
 @api_view(["DELETE"])
 def delete_product(request, sku):
+
+    try:
+        sku = int(sku)
+    except ValueError as e:
+        return Response({"error" : "sku must be an integer"}, status=status.HTTP_400_BAD_REQUEST)
+    
     deleted = service.delete_product(sku)
 
     if not deleted:
