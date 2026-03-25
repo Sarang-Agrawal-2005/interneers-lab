@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <h2 class="logo">Inventory</h2>
+        <nav>
+            <ul>
+                <a href="index.html">
+                    <li class="active">Products</li>
+                </a>
+                <a href="categories.html">
+                    <li>Categories</li>
+                </a>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main">
+
+        <!-- Top Bar -->
+        <header class="topbar">
+            <h1>Inventory Dashboard</h1>
+            <button class="refresh-btn" id="reload-category-btn">Refresh</button>
+        </header>
+
+        <!-- Product Container -->
+        <section class="content">
+            <h2 id = "title">Categories</h2>
+            <div id="category-container" class="category-grid">
+                <!-- JS will render categories -->
+            </div>
+        </section>
+    </div>
+
+    <script src="scripts.js"></script>
+</body>
+</html>

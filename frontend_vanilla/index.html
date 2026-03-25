@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <h2 class="logo">Inventory</h2>
+        <nav>
+            <ul>
+                <a href="index.html">
+                    <li class="active">Products</li>
+                </a>
+                <a href="categories.html">
+                    <li>Categories</li>
+                </a>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main">
+
+        <!-- Top Bar -->
+        <header class="topbar">
+            <h1>Inventory Dashboard</h1>
+            <button class="refresh-btn" id="reload-btn">Refresh</button>
+        </header>
+
+        <!-- Product Container -->
+        <section class="content">
+            <h2 id = "title">Products</h2>
+
+            <div class="filters">
+                <input id="filter-brand" placeholder="Brand">
+                
+                <input id="filter-min-qty" type="number" placeholder="Min Quantity">
+                <input id="filter-max-qty" type="number" placeholder="Max Quantity">
+
+                <select id="filter-sort-by">
+                    <option value="">Sort By</option>
+                    <option value="name">Name</option>
+                    <option value="sku">SKU</option>
+                    <option value="brand">Brand</option>
+                    <option value="quantity">Quantity</option>
+                    <option value="reorder_level">Reorder Level</option>
+                    <option value="created_at">Created At</option>
+                </select>
+
+                <select id="filter-order">
+                    <option value="">Order</option>
+                    <option value="asc">Ascending</option>
+                    <option value="desc">Descending</option>
+                </select>
+
+                <input id="filter-page-no" type="number" placeholder="Page No.">
+                <input id="filter-page-size" type="number" placeholder="Page Size">
+
+                <button id="apply-filters">Apply Filters</button>
+            </div>
+
+            <div id="product-container" class="product-grid">
+                <!-- JS will render products -->
+            </div>
+        </section>
+    </div>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
