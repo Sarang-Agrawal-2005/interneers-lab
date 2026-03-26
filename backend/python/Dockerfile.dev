@@ -1,12 +1,26 @@
+# Use stable Python version
 FROM python:3.14
 
-EXPOSE 8001
+# Set working directory
+WORKDIR /app
 
-WORKDIR /workspace/backend
+# Install system dependencies (optional but useful)
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN pip install --upgrade pip
+# Copy requirements first (for caching)
+COPY requirements.txt .
 
-COPY ./backend/python/requirements.txt ./
+# Install dependencies
+RUN pip install --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
 
-RUN pip install --no-cache-dir -r requirements.txt\
-    && rm -rf /tmp/pip-tmp
+# Copy entire backend code
+COPY . .
+
+# Expose Django port
+EXPOSE 8000
+
+# Run Django server
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

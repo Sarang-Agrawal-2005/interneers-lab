@@ -2,6 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./AppWithApi";
+import Welcome from "./components/Welcome";
+import Counter from "./components/Counter";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 
@@ -11,6 +13,8 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <BrowserRouter>
+      <Welcome name="Sarang" />
+      <Counter />
       <App />
     </BrowserRouter>
   </React.StrictMode>,
