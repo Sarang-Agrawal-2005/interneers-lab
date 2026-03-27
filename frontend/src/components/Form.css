@@ -1,0 +1,42 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.form input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.form button {
+  padding: 12px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.form button:hover {
+  background: #0056b3;
+}
+
+.section {
+  background: #f7f7fa;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.result-box {
+  background: #222;
+  color: #00ff99;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 15px;
+  font-size: 14px;
+  white-space: pre-wrap;
+}

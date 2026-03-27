@@ -1,5 +1,8 @@
 import os
 from mongoengine import connect
+from dotenv import load_dotenv
+
+load_dotenv()
 
 connect(
     db=os.getenv("MONGO_DB"),
