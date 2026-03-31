@@ -11,8 +11,6 @@ function CreateProductForm() {
     brand: "",
   });
 
-  const [result, setResult] = useState<any>(null);
-
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   }

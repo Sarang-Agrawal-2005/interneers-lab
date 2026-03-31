@@ -7,6 +7,9 @@ import ReadItemForm from "./components/ReadItemForm";
 import UpdateProductForm from "./components/UpdateProductForm";
 import UpdateCategoryForm from "./components/UpdateCategoryForm";
 import DeleteItemForm from "./components/DeleteItemForm";
+import Sidebar from "./components/Sidebar";
+import RightSidebar from "components/RightSidebar";
+import ProductDashboard from "components/ProductDashboard";
 import "./App.css";
 
 function App() {
@@ -14,6 +17,9 @@ function App() {
   const [selectedPage, setSelectedPage] = useState<"products" | "categories">(
     "products",
   );
+  const [selectedFunction, setSelectedFunction] = useState<
+    "Dashboard" | "CRUD"
+  >("Dashboard");
 
   // // data from API
   // const [items, setItems] = useState([]);
@@ -28,41 +34,70 @@ function App() {
 
   return (
     <div>
-      <Navbar onSelect={setSelectedPage} />
+      <Navbar onSelect={setSelectedFunction} />
 
-      <div className="main-container">
-        {/* CREATE */}
-        <section className="section">
-          <h2>Create</h2>
-          {selectedPage === "products" ? (
-            <CreateProductForm />
-          ) : (
-            <CreateCategoryForm />
-          )}
-        </section>
+      {selectedFunction === "CRUD" ? (
+        <div id="content">
+          <Sidebar onSelect={setSelectedPage} />
 
-        {/* READ */}
-        <section className="section">
-          <h2>Read</h2>
-          <ReadItemForm type={selectedPage} />
-        </section>
+          <div className="main-container">
+            <h1>
+              Create, Read, Update and Delete{" "}
+              {selectedPage.charAt(0).toUpperCase() + selectedPage.slice(1)}
+            </h1>
+            <div className="CRUD-container">
+              {/* CREATE */}
+              <section className="section">
+                <h2>Create</h2>
+                {selectedPage === "products" ? (
+                  <CreateProductForm />
+                ) : (
+                  <CreateCategoryForm />
+                )}
+              </section>
 
-        {/* UPDATE */}
-        <section className="section">
-          <h2>Update</h2>
-          {selectedPage === "products" ? (
-            <UpdateProductForm />
-          ) : (
-            <UpdateCategoryForm />
-          )}
-        </section>
+              {/* UPDATE */}
+              <section className="section">
+                <h2>Update</h2>
+                {selectedPage === "products" ? (
+                  <UpdateProductForm />
+                ) : (
+                  <UpdateCategoryForm />
+                )}
+              </section>
+            </div>
+            <div className="CRUD-container">
+              {/* READ */}
+              <section className="section">
+                <h2>Read</h2>
+                <ReadItemForm type={selectedPage} />
+              </section>
 
-        {/* DELETE */}
-        <section className="section">
-          <h2>Delete</h2>
-          <DeleteItemForm type={selectedPage} />
-        </section>
-      </div>
+              {/* DELETE */}
+              <section className="section">
+                <h2>Delete</h2>
+                <DeleteItemForm type={selectedPage} />
+              </section>
+            </div>
+          </div>
+          <RightSidebar />
+        </div>
+      ) : (
+        <div id="content">
+          <Sidebar onSelect={setSelectedPage} />
+
+          <div className="main-container">
+            <h1>
+              Welcome to the{" "}
+              {selectedPage.charAt(0).toUpperCase() + selectedPage.slice(1)}{" "}
+              Dashboard
+            </h1>
+
+            <ProductDashboard page={selectedPage} />
+          </div>
+          <RightSidebar />
+        </div>
+      )}
 
       <Footer />
     </div>

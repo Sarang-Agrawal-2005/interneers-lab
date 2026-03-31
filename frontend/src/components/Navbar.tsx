@@ -2,7 +2,8 @@ import React from "react";
 import "./Navbar.css";
 
 interface NavbarProps {
-  onSelect: (value: "products" | "categories") => void;
+  onSelect: (value: "Dashboard" | "CRUD") => void;
+  //onSelect is a callback function recieved from app as a prop which corresponds to the setSelectedPage function
 }
 
 function Navbar({ onSelect }: NavbarProps) {
@@ -11,8 +12,8 @@ function Navbar({ onSelect }: NavbarProps) {
       <div className="navbar-logo">Inventory Management System</div>
 
       <ul className="navbar-links">
-        <li onClick={() => onSelect("products")}>Products</li>
-        <li onClick={() => onSelect("categories")}>Categories</li>
+        <li onClick={() => onSelect("Dashboard")}>Dashboard</li>
+        <li onClick={() => onSelect("CRUD")}>CRUD</li>
       </ul>
     </nav>
   );
