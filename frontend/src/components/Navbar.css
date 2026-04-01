@@ -1,54 +1,73 @@
-/* Container */
+/* NAVBAR MAIN CONTAINER */
 .navbar {
-  width: 100%;
-  height: 90px;
-  background: #003B88;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0 25px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
-}
-
-/* Logo */
-.navbar-logo {
+  background-color: #222;
+  padding: 12px 24px;
   color: white;
-  font-size: 1.4rem;
-  font-weight: 600;
-  letter-spacing: 1px;
-  left:10px;
-  position: absolute;
-}
-
-/* Links container */
-.navbar-links {
-  list-style: none;
+  font-family: Arial, Helvetica, sans-serif;
   display: flex;
-  gap: 80px;
-  
+  flex-direction: column; /* stack rows vertically */
+  gap: 10px; /* spacing between rows */
 }
 
-/* Individual link */
-.navbar-links li {
-  color: #ffffff;
-  text-decoration: none;
-  transition: color 0.2s ease;
-  border: #ffffff solid 2px;
-  padding: 5px;
-  border-radius: 10%;
-  margin-right: 10px;
-  height: 40px;;
-  width: 180px;
+/* FIRST ROW - LOGO + CENTER BUTTONS */
+.navbar-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* LOGO */
+.navbar-logo {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+/* DASHBOARD + CRUD CENTER BUTTON GROUP */
+.navbar-center {
+  display: flex;
+  gap: 16px; /* space between dashboard/crud */
+}
+
+/* BUTTON STYLING */
+.navbar-top button {
+  background-color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #444;
+  font-size: 15px;
+  transition: background 0.2s ease;
+  width:100%;
+}
+
+.navbar-top button:hover {
+  background-color: #ddd;
+}
+
+/* SECOND ROW - PRODUCTS + CATEGORIES */
+.navbar-bottom {
   display: flex;
   justify-content: center;
-  align-items: center;
-  font-size: 30px;
-  font-weight: 500;
+  gap: 16px; /* space between the two buttons */
+}
+.navbar-bottom button {
+  background-color: #444;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: white;
+  font-size: 15px;
+  transition: background 0.2s ease;
+  width:100%;
 }
 
-.navbar-links li:hover {
-  color: #ffffff;
-  scale: 1.1;
-  opacity: 0.9;
-  cursor: pointer;
+.navbar-bottom button:hover {
+  background-color: #666;
+}
+
+/* Remove underline from Links */
+.navbar a {
+  text-decoration: none;
 }

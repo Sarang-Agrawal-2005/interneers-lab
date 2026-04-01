@@ -1,20 +1,34 @@
 import React from "react";
 import "./Navbar.css";
+import { Link } from "react-router-dom";
 
 interface NavbarProps {
-  onSelect: (value: "Dashboard" | "CRUD") => void;
-  //onSelect is a callback function recieved from app as a prop which corresponds to the setSelectedPage function
+  onSelect: (value: "products" | "categories") => void;
 }
 
 function Navbar({ onSelect }: NavbarProps) {
   return (
     <nav className="navbar">
-      <div className="navbar-logo">Inventory Management System</div>
+      {/* FIRST ROW: logo + dashboard/crud */}
+      <div className="navbar-top">
+        <div className="navbar-logo">Inventory Management System</div>
 
-      <ul className="navbar-links">
-        <li onClick={() => onSelect("Dashboard")}>Dashboard</li>
-        <li onClick={() => onSelect("CRUD")}>CRUD</li>
-      </ul>
+        <div className="navbar-center">
+          <Link to="/dashboard">
+            <button>Dashboard</button>
+          </Link>
+
+          <Link to="/crud">
+            <button>CRUD</button>
+          </Link>
+        </div>
+      </div>
+
+      {/* SECOND ROW: products/categories */}
+      <div className="navbar-bottom">
+        <button onClick={() => onSelect("products")}>Products</button>
+        <button onClick={() => onSelect("categories")}>Categories</button>
+      </div>
     </nav>
   );
 }

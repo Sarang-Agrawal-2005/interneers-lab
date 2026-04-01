@@ -1,60 +1,54 @@
 import React, { useEffect, useState } from "react";
 import "./ProductDashboard.css";
+import ProductCard from "./ProductCard";
+import CategoryCard from "./CategoryCard";
 
 function ProductDashboard({ page }: { page: "products" | "categories" }) {
   const [items, setItems] = useState([]);
+  const [expandedId, setExpandedId] = useState<string | number | null>(null);
 
   useEffect(() => {
     fetch(`http://localhost:8000/api/${page}/`)
       .then((res) => res.json())
       .then((data) => setItems(data))
       .catch((err) => console.error(err));
+
+    setExpandedId(null); // reset expanded card when switching tabs
   }, [page]);
 
+  const toggleExpand = (id: string | number) => {
+    setExpandedId((prev) => (prev === id ? null : id));
+  };
+
   return (
-    <div className="product-dashboard">
-      {items.length === 0 ? (
-        <p className="loading-text">Loading {page}...</p>
-      ) : page === "products" ? (
-        /* ---------- PRODUCT CARDS ---------- */
-        <div className="product-grid">
-          {items.map((item: any) => (
-            <div className="product-card" key={item.sku}>
-              <h3 className="product-title">{item.name}</h3>
-
-              <div className="product-info">
-                <span className="product-detail">SKU: {item.sku}</span>
-                <span className="product-detail">
-                  Quantity: {item.quantity}
-                </span>
-                <span className="product-detail">
-                  Reorder Level: {item.reorder_level}
-                </span>
-                <span className="product-detail">Brand: {item.brand}</span>
-                <span className="product-category">
-                  Category: {item.category_id}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-      ) : (
-        /* ---------- CATEGORY CARDS ---------- */
-        <div className="category-list">
-          {items.map((item: any) => (
-            <div className="product-card" key={item.id}>
-              <h3 className="product-title">{item.title}</h3>
-
-              <div className="product-info">
-                <span className="product-detail">
-                  Description: {item.description}
-                </span>
-                <span className="product-category">Category ID: {item.id}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+    <div className="main-container">
+      <div className="product-dashboard">
+        {items.length === 0 ? (
+          <p className="loading-text">Loading {page}...</p>
+        ) : page === "products" ? (
+          <div className="product-grid">
+            {items.map((item: any) => (
+              <ProductCard
+                key={item.sku}
+                item={item}
+                isOpen={expandedId === item.sku}
+                toggleExpand={toggleExpand}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="product-grid">
+            {items.map((item: any) => (
+              <CategoryCard
+                key={item.id}
+                item={item}
+                isOpen={expandedId === item.id}
+                toggleExpand={toggleExpand}
+              />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

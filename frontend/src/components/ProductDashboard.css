@@ -1,9 +1,25 @@
-/* Page layout */
-.product-dashboard {
-  padding: 20px;
+/* Fix main container */
+.main-container {
   width: 100%;
   display: flex;
+  flex-direction: column;
+  justify-content: center;   /* was center */
+  align-items: center;       /* was center */
+  padding: 20px;                 /* prevents touching edges */
+  box-sizing: border-box;
+  /* overflow: auto;                 */
+  overflow-x: hidden;
+}
+
+/* Page layout */
+.product-dashboard {
+  width: 100%;
+  padding: 20px;
+  display: flex;
   justify-content: center;
+  flex-wrap: wrap;
+  /* overflow: visible; */
+  overflow-x: hidden;
 }
 
 /* Grid layout */
@@ -17,7 +33,7 @@
 
 /* Card styling */
 .product-card {
-  background: #ffffff;
+  background: #444;
   border-radius: 12px;
   padding: 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
@@ -34,15 +50,21 @@
 .product-title {
   font-size: 20px;
   margin-bottom: 8px;
-  color: #0a58ca; /* Matches your blue theme */
+  color: white; /* Matches your blue theme */
 }
 
 /* Description */
 .product-description {
   font-size: 14px;
-  color: #555;
+  color: #888;
   margin-bottom: 12px;
   min-height: 40px;
+}
+
+.product-detail {
+  font-size: 12px;
+  color: #aaa;
+  margin-bottom: 12px;
 }
 
 /* Price + category footer */
@@ -52,11 +74,45 @@
   font-size: 14px;
 }
 
-.product-price {
-  font-weight: bold;
-  color: #2ecc71;
+.product-category {
+  color: #aaa;
 }
 
-.product-category {
-  color: #888;
+.product-card {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.product-card.open {
+  background: #222;
+}
+
+.product-info {
+  display:flex;
+  flex-direction: column;
+  margin-top: 10px;
+  animation: fadeIn 0.2s ease;
+}
+
+/* BUTTON STYLING */
+button {
+  margin-top: 8px;
+  background-color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #444;
+  font-size: 15px;
+  transition: background 0.2s ease;
+  width:100%;
+}
+
+button:hover {
+  background-color: #ddd;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
 }

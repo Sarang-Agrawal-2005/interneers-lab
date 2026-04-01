@@ -1,0 +1,42 @@
+#content {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: auto;       /* was 100% – remove */
+  flex: 1;
+  align-items: flex-start; /* prevents leaking */
+}
+
+/* Fix main container */
+.main-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;   /* was center */
+  align-items: center;       /* was center */
+  padding: 20px;                 /* prevents touching edges */
+  box-sizing: border-box;
+  overflow: auto;                /* prevents leakage */
+  overflow-x: hidden;
+}
+
+/* Allow CRUD container to shrink instead of leak */
+.CRUD-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;     /* not center */
+  align-items: flex-start;
+  width: 100%;                         /* was fixed 1000px */
+  flex-wrap: wrap;                     /* prevents overflow */
+  gap: 20px;
+}
+
+/* Sections adapt */
+.section {
+  background: #f7f7fa;
+  flex: 1;
+  padding: 20px;
+  min-width: 350px;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
